@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgres-db
+    image: postgres:13.3-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    networks:
+      - naat_network
+
+  naat-app:
+    container_name: naat-back-app
+    build:
+      context: ./back-naat
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./back-naat/.env
+    ports:
+      - '4000:4000'
+    depends_on:
+      - db
+    volumes:
+      - ./back-naat/src:/app/src
+    networks:
+      - naat_network
+
+networks:
+  naat_network:
+    driver: bridge
