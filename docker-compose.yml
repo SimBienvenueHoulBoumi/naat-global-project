@@ -15,7 +15,7 @@ services:
       - naat_network
 
   naat-app:
-    container_name: naat-back-app
+    container_name: back-app
     build:
       context: ./back-naat
       dockerfile: Dockerfile.dev
